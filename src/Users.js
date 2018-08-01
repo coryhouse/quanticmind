@@ -1,22 +1,7 @@
 import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
 
 class Users extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      users: []
-    };
-  }
-
-  componentDidMount() {
-    // make api call
-    fetch("http://www.mocky.io/v2/5b607ffa2f00007a004619a2")
-      .then(response => response.json())
-      .then(users => {
-        this.setState({ users });
-      });
-  }
-
   handleDeleteClick(userId, event) {
     const users = this.state.users.filter(user => user.id !== userId);
     this.setState({ users });
@@ -34,7 +19,7 @@ class Users extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {this.state.users.map(user => {
+          {this.props.users.map(user => {
             return (
               <tr key={user.email}>
                 <td>
@@ -44,7 +29,10 @@ class Users extends React.Component {
                     Delete
                   </button>
                 </td>
-                <td>{user.firstName}</td>
+                {/* Click on firstName and redirect to /user/id */}
+                <td>
+                  <Link to={`/user/${user.id}`}>{user.firstName}</Link>
+                </td>
                 <td>{user.lastName}</td>
                 <td>{user.email}</td>
               </tr>
@@ -59,8 +47,10 @@ class Users extends React.Component {
     return (
       <Fragment>
         <h1>Users</h1>
-        <button>Add User</button>
-        {this.state.users.length > 0 ? (
+        <Link to="/user">
+          <button>Add User</button>
+        </Link>
+        {this.props.users.length > 0 ? (
           this.renderUserTable()
         ) : (
           <h2>No users. :(</h2>
