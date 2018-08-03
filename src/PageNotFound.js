@@ -1,17 +1,20 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
-class PageNotFound extends Component {
-  render() {
-    return (
-      <Fragment>
-        <h1>Oops! Page not found.</h1>
-        <p>
-          <Link to="/">Go home</Link>
-        </p>
-      </Fragment>
-    );
-  }
-}
+const PageNotFound = ({ location }) => {
+  return (
+    <Fragment>
+      <h1>Oops! {location.pathname} was not found.</h1>
+      <p>
+        <Link to="/">Go home</Link>
+      </p>
+    </Fragment>
+  );
+};
+
+PageNotFound.propTypes = {
+  location: PropTypes.object.isRequired
+};
 
 export default PageNotFound;

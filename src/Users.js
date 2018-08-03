@@ -1,13 +1,18 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 class Users extends React.Component {
-  handleDeleteClick(userId, event) {
-    const users = this.state.users.filter(user => user.id !== userId);
-    this.setState({ users });
+  static propTypes = {
+    onDeleteClick: PropTypes.func.isRequired,
+    users: PropTypes.array.isRequired
+  };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return false;
   }
 
-  renderUserTable() {
+  renderUserTable({ users, onDeleteClick }) {
     return (
       <table>
         <thead>
@@ -19,13 +24,11 @@ class Users extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.users.map(user => {
+          {users.map(user => {
             return (
               <tr key={user.email}>
                 <td>
-                  <button
-                    onClick={event => this.handleDeleteClick(user.id, event)}
-                  >
+                  <button onClick={event => onDeleteClick(user.id, event)}>
                     Delete
                   </button>
                 </td>
@@ -51,7 +54,7 @@ class Users extends React.Component {
           <button>Add User</button>
         </Link>
         {this.props.users.length > 0 ? (
-          this.renderUserTable()
+          this.renderUserTable(this.props)
         ) : (
           <h2>No users. :(</h2>
         )}

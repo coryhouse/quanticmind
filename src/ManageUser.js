@@ -15,12 +15,16 @@ class ManageUser extends Component {
     redirectToUsersPage: false
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.users.length > 0) {
-      const userId = nextProps.match.params.id;
-      const user = nextProps.users.find(u => u.id === userId);
-      this.setState({ user });
+  static getDerivedStateFromProps(props, state) {
+    const userId = props.match.params.id;
+    // if trying to edit a user, users have been fetched, and state hasn't been initialized yet.
+    if (userId && props.users.length > 0 && !state.user.id) {
+      const user = props.users.find(u => u.id === userId);
+      // Return new state for user. This will only overrwrite user state.
+      return { user };
     }
+    // Since we don't need to set new state in this case, just return null.
+    return null;
   }
 
   handleSubmit = event => {
@@ -34,7 +38,7 @@ class ManageUser extends Component {
     }
 
     if (errors.length === 0) {
-      this.props.onAddUser(this.state.user);
+      this.props.onSaveUser(this.state.user);
       this.setState({ redirectToUsersPage: true });
     }
 
@@ -109,7 +113,7 @@ class ManageUser extends Component {
 
 ManageUser.propTypes = {
   users: PropTypes.array.isRequired,
-  onAddUser: PropTypes.func.isRequired,
+  onSaveUser: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired
 };
 

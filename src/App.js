@@ -21,13 +21,25 @@ class App extends React.Component {
       });
   }
 
-  handleAddUser = user => {
-    // in a real app, I'd call an api to save the user here,
-    // and get back a user object with an ID assigned.
-    const savedUser = { ...user, id: this.guid() };
+  handleSaveUser = user => {
+    let users;
+    if (!user.id) {
+      // In a real app, I'd call an api to save the user here,
+      // and get back a user object with an ID assigned.
+      const savedUser = { ...user, id: this.guid() };
 
-    // Add the passed user to the array of users in state.
-    const users = [...this.state.users, savedUser];
+      // Add the passed user to the array of users in state.
+      users = [...this.state.users, savedUser];
+    } else {
+      // Replace the user that was just edited.
+      users = this.state.users.map(u => (u.id === user.id ? user : u));
+    }
+
+    this.setState({ users });
+  };
+
+  handleDeleteClick = (userId, event) => {
+    const users = this.state.users.filter(user => user.id !== userId);
     this.setState({ users });
   };
 
@@ -61,7 +73,12 @@ class App extends React.Component {
           <Route path="/" exact component={Home} />
           <Route
             path="/users"
-            render={() => <Users users={this.state.users} />}
+            render={() => (
+              <Users
+                users={this.state.users}
+                onDeleteClick={this.handleDeleteClick}
+              />
+            )}
           />
           <Route
             path="/user"
@@ -69,7 +86,7 @@ class App extends React.Component {
             render={({ match }) => (
               <ManageUser
                 users={this.state.users}
-                onAddUser={this.handleAddUser}
+                onSaveUser={this.handleSaveUser}
                 match={match}
               />
             )}
@@ -79,7 +96,7 @@ class App extends React.Component {
             render={({ match }) => (
               <ManageUser
                 users={this.state.users}
-                onAddUser={this.handleAddUser}
+                onSaveUser={this.handleSaveUser}
                 match={match}
               />
             )}
