@@ -1,11 +1,12 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { userType } from "./propTypes";
 
 class Users extends React.Component {
   static propTypes = {
     onDeleteClick: PropTypes.func.isRequired,
-    users: PropTypes.array.isRequired
+    users: PropTypes.arrayOf(userType).isRequired
   };
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -28,7 +29,7 @@ class Users extends React.Component {
             return (
               <tr key={user.email}>
                 <td>
-                  <button onClick={event => onDeleteClick(user.id, event)}>
+                  <button name={user.id} onClick={onDeleteClick}>
                     Delete
                   </button>
                 </td>
