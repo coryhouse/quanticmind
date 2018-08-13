@@ -5,6 +5,7 @@ import Home from "./Home";
 import ManageUser from "./ManageUser";
 import PageNotFound from "./PageNotFound";
 import { Route, Switch } from "react-router-dom";
+import LoggedInUserContext from "./LoggedInUserContext";
 
 // Move this to a separate file and import it here.
 class App extends React.Component {
@@ -38,7 +39,8 @@ class App extends React.Component {
     this.setState({ users });
   };
 
-  handleDeleteClick = (userId, event) => {
+  handleDeleteClick = event => {
+    const userId = event.target.name;
     const users = this.state.users.filter(user => user.id !== userId);
     this.setState({ users });
   };
@@ -66,8 +68,14 @@ class App extends React.Component {
   }
 
   render() {
+    const loggedInUser = {
+      id: "1",
+      firstName: "Cory",
+      lastName: "House",
+      email: "housecor@gmail.com"
+    };
     return (
-      <Fragment>
+      <LoggedInUserContext.Provider value={loggedInUser}>
         <Nav />
         <Switch>
           <Route path="/" exact component={Home} />
@@ -101,9 +109,17 @@ class App extends React.Component {
               />
             )}
           />
-          <Route path="*" component={PageNotFound} />
+          <Route
+            path="*"
+            render={({ location }) => (
+              <PageNotFound
+                location={location}
+                message="It's actually Cory's fault."
+              />
+            )}
+          />
         </Switch>
-      </Fragment>
+      </LoggedInUserContext.Provider>
     );
   }
 }
