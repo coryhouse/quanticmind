@@ -4,9 +4,9 @@ import LoggedInUserContext from "./LoggedInUserContext";
 
 const Nav = props => (
   <LoggedInUserContext.Consumer>
-    {loggedInUser => (
+    { ({loggedInUser, logout}) => (
       <Fragment>
-        <p>Hello {loggedInUser.firstName}</p>
+        <p>Hello {loggedInUser.firstName} <a href="/" onClick={logout}>Logout</a></p>
         <ul>
           <li>
             <NavLink to="/">Home</NavLink>

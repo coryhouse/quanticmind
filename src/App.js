@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import Users from "./Users";
 import Nav from "./Nav";
 import Home from "./Home";
@@ -10,7 +10,13 @@ import LoggedInUserContext from "./LoggedInUserContext";
 // Move this to a separate file and import it here.
 class App extends React.Component {
   state = {
-    users: []
+    users: [],
+    loggedInUser: {
+      id: "1",
+      firstName: "Cory",
+      lastName: "House",
+      email: "housecor@gmail.com"
+    }
   };
 
   componentDidMount() {
@@ -21,6 +27,11 @@ class App extends React.Component {
         this.setState({ users });
       });
   }
+
+  logout = event => {
+    event.preventDefault();
+    this.setState({ loggedInUser: null });
+  };
 
   handleSaveUser = user => {
     let users;
@@ -68,14 +79,13 @@ class App extends React.Component {
   }
 
   render() {
-    const loggedInUser = {
-      id: "1",
-      firstName: "Cory",
-      lastName: "House",
-      email: "housecor@gmail.com"
+    const loggedInUserContextValue = {
+      loggedInUser: this.state.loggedInUser,
+      logout: this.logout
     };
+
     return (
-      <LoggedInUserContext.Provider value={loggedInUser}>
+      <LoggedInUserContext.Provider value={loggedInUserContextValue}>
         <Nav />
         <Switch>
           <Route path="/" exact component={Home} />
