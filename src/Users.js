@@ -2,15 +2,18 @@ import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { userType } from "./propTypes";
+import { connect } from "react-redux";
+import * as userActions from "./actions/userActions";
+import { bindActionCreators } from "redux";
 
 class Users extends React.Component {
   static propTypes = {
-    onDeleteClick: PropTypes.func.isRequired,
     users: PropTypes.arrayOf(userType).isRequired
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return false;
+  componentDidMount() {
+    // Hey Redux, load our user data.
+    this.props.actions.loadUsers();
   }
 
   renderUserTable({ users, onDeleteClick }) {
@@ -29,7 +32,10 @@ class Users extends React.Component {
             return (
               <tr key={user.email}>
                 <td>
-                  <button name={user.id} onClick={onDeleteClick}>
+                  <button
+                    name={user.id}
+                    onClick={this.props.actions.deleteUser}
+                  >
                     Delete
                   </button>
                 </td>
@@ -64,4 +70,20 @@ class Users extends React.Component {
   }
 }
 
-export default Users;
+function mapStateToProps(state, ownProps) {
+  return {
+    users: state.users
+  };
+}
+
+// Declare the actions that we want from Redux
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(userActions, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Users);

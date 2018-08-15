@@ -60,7 +60,9 @@ class ManageUser extends Component {
   renderErrors() {
     return (
       <ul style={errorStyle}>
-        {this.state.errors.map(error => <li key={error}>{error}</li>)}
+        {this.state.errors.map(error => (
+          <li key={error}>{error}</li>
+        ))}
       </ul>
     );
   }
