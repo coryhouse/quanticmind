@@ -13,7 +13,7 @@ class Users extends React.Component {
 
   componentDidMount() {
     // Hey Redux, load our user data.
-    this.props.actions.loadUsers();
+    if (this.props.users.length === 0) this.props.actions.loadUsers();
   }
 
   renderUserTable({ users, onDeleteClick }) {
@@ -34,7 +34,7 @@ class Users extends React.Component {
                 <td>
                   <button
                     name={user.id}
-                    onClick={this.props.actions.deleteUser}
+                    onClick={() => this.props.actions.deleteUser(user.id)}
                   >
                     Delete
                   </button>

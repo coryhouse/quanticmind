@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { error as errorStyle } from "./styles/styles";
 import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import * as userActions from "./actions/userActions";
+import { bindActionCreators } from "redux";
 
 class ManageUser extends Component {
   state = {
@@ -14,6 +17,11 @@ class ManageUser extends Component {
     errors: [],
     redirectToUsersPage: false
   };
+
+  componentDidMount() {
+    // Hey Redux, load our user data.
+    if (this.props.users.length === 0) this.props.actions.loadUsers();
+  }
 
   static getDerivedStateFromProps(props, state) {
     const userId = props.match.params.id;
@@ -38,7 +46,7 @@ class ManageUser extends Component {
     }
 
     if (errors.length === 0) {
-      this.props.onSaveUser(this.state.user);
+      this.props.actions.saveUser(this.state.user);
       this.setState({ redirectToUsersPage: true });
     }
 
@@ -113,10 +121,28 @@ class ManageUser extends Component {
   }
 }
 
+// Challenge
+// 1. Support saving an existing user
+
 ManageUser.propTypes = {
   users: PropTypes.array.isRequired,
-  onSaveUser: PropTypes.func.isRequired,
+  actions: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired
 };
 
-export default ManageUser;
+function mapStateToProps(state, ownProps) {
+  return {
+    users: state.users
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(userActions, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ManageUser);

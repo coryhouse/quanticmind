@@ -8,6 +8,20 @@ function loadUserSuccess(users) {
   };
 }
 
+export function deleteUser(userId) {
+  return {
+    type: types.DELETE_USER,
+    userId
+  };
+}
+
+export function saveUser(user) {
+  return {
+    type: types.SAVE_USER,
+    user
+  };
+}
+
 // Thunk. A function that returns a function.
 // The execution of the inner function happens later.
 export function loadUsers() {
