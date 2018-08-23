@@ -11,10 +11,13 @@ class Users extends React.Component {
     users: PropTypes.arrayOf(userType).isRequired
   };
 
-  componentDidMount() {
-    // Hey Redux, load our user data.
-    if (this.props.users.length === 0) this.props.actions.loadUsers();
-  }
+  handleDeleteUserSuccess = () => {
+    alert("Deleted!");
+  };
+
+  handleDeleteUserFailure = () => {
+    alert("Oops! Delete failed!");
+  };
 
   renderUserTable({ users, onDeleteClick }) {
     return (
@@ -34,7 +37,13 @@ class Users extends React.Component {
                 <td>
                   <button
                     name={user.id}
-                    onClick={() => this.props.actions.deleteUser(user.id)}
+                    onClick={() =>
+                      this.props.actions.deleteUser(
+                        user.id,
+                        this.handleDeleteUserSuccess,
+                        this.handleDeleteUserFailure
+                      )
+                    }
                   >
                     Delete
                   </button>
@@ -65,6 +74,7 @@ class Users extends React.Component {
         ) : (
           <h2>No users. :(</h2>
         )}
+        {this.props.errors.length > 0 && <p>{this.props.errors[0].message}</p>}
       </Fragment>
     );
   }
@@ -72,7 +82,8 @@ class Users extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    users: state.users
+    users: state.users,
+    errors: state.errors
   };
 }
 

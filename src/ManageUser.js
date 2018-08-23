@@ -18,11 +18,6 @@ class ManageUser extends Component {
     redirectToUsersPage: false
   };
 
-  componentDidMount() {
-    // Hey Redux, load our user data.
-    if (this.props.users.length === 0) this.props.actions.loadUsers();
-  }
-
   static getDerivedStateFromProps(props, state) {
     const userId = props.match.params.id;
     // if trying to edit a user, users have been fetched, and state hasn't been initialized yet.
