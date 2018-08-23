@@ -1,5 +1,7 @@
 export const LOGOUT_USER = "LOGOUT_USER";
 export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
 export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
+export const SAVE_USER_SUCCESS = "SAVE_USER_SUCCESS";
+export const SAVE_USER_FAILURE = "SAVE_USER_FAILURE";
 export const DELETE_USER = "DELETE_USER";
 export const SAVE_USER = "SAVE_USER";

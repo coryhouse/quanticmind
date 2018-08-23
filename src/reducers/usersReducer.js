@@ -9,7 +9,7 @@ export default function users(state = initialState.users, action) {
       return action.users;
     case types.DELETE_USER:
       return state.filter(u => u.id !== action.userId);
-    case types.SAVE_USER:
+    case types.SAVE_USER_SUCCESS:
       if (!action.user.id) {
         // In a real app, I'd call an api to save the user here,
         // and get back a user object with an ID assigned.

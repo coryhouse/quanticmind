@@ -30,6 +30,14 @@ class ManageUser extends Component {
     return null;
   }
 
+  handleSaveUserSuccess = user => {
+    alert(`${user.firstName} saved!`);
+  };
+
+  handleSaveUserFailure = error => {
+    alert("Oops! " + error);
+  };
+
   handleSubmit = event => {
     event.preventDefault(); // stop the page from reloading - that's the browser default.
     const errors = [];
@@ -41,7 +49,11 @@ class ManageUser extends Component {
     }
 
     if (errors.length === 0) {
-      this.props.actions.saveUser(this.state.user);
+      this.props.actions.saveUser(
+        this.state.user,
+        this.handleSaveUserSuccess,
+        this.handleSaveUserFailure
+      );
       this.setState({ redirectToUsersPage: true });
     }
 
@@ -115,9 +127,6 @@ class ManageUser extends Component {
     );
   }
 }
-
-// Challenge
-// 1. Support saving an existing user
 
 ManageUser.propTypes = {
   users: PropTypes.array.isRequired,

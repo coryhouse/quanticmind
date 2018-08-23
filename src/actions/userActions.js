@@ -1,6 +1,20 @@
 import * as types from "./actionTypes";
 
 // Action creator
+export function saveUserSuccess(user) {
+  return {
+    type: types.SAVE_USER_SUCCESS,
+    user
+  };
+}
+
+export function saveUserFailure(error) {
+  return {
+    type: types.SAVE_USER_FAILURE,
+    error
+  };
+}
+
 export function loadUserSuccess(users) {
   return {
     type: types.LOAD_USER_SUCCESS,
@@ -24,10 +38,12 @@ export function deleteUser(userId, successCallback, failureCallback) {
   };
 }
 
-export function saveUser(user) {
+export function saveUser(user, successCallback, failureCallback) {
   return {
     type: types.SAVE_USER,
-    user
+    user,
+    successCallback,
+    failureCallback
   };
 }
 

@@ -11,3 +11,9 @@ export function deleteUser(userId) {
     return resolve();
   });
 }
+
+export function saveUser(user) {
+  return new Promise((resolve, reject) => {
+    return resolve({ ...user });
+  });
+}
